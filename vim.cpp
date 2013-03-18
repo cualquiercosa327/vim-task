@@ -22,7 +22,7 @@ static int N, lastE = -1;
 
 int solveRightSingleBack(int pos, Alpha pass);
 int solveRight(int pos, Alpha pass);
-int solve(int pos, Alpha pass1, Alpha pass2);
+int solve(int pos, Alpha pass1, Alpha pass2, bool ignoreOne = false);
 
 bool anyEAfter(int pos) {
 	return pos > lastE;
@@ -76,21 +76,7 @@ int solveRight(int pos, Alpha pass) {
 		for (Alpha c = 0; c < ALPHA; ++c) {
 			if (c == E)
 				continue;
-			// We'd want to say |res = min(res, solve(npos, pass, c) + 2)| here, but
-			// it doesn't work because then c can hit ar[npos]. Simulate solve()
-			// without that check instead.
-			if (ar[npos] != pass) {
-				// the "c" pressed starts with npos + 1
-				res = min(res, solve(npos+1, pass, c) + 3); // "h", "fc"
-			}
-			else {
-				res = min(res, solveRight(npos+1, c) + 3); // "h", "fc"
-				for (Alpha npass = 0; npass < ALPHA; ++npass) {
-					if (npass == E)
-						continue;
-					res = min(res, solve(npos+1, npass, c) + 5); // "fc", "h", "fc"
-				}
-			}
+			res = min(res, solve(npos, pass, c, true) + 2); // "fc"
 		}
 		res = min(res, solveRightSingleBack(npos, pass));
 		return mem = res + base; // also 'base' many "h"
@@ -110,15 +96,16 @@ int solveRight(int pos, Alpha pass) {
 }
 
 // includes back
-int solve(int pos, Alpha pass1, Alpha pass2) {
+int solve(int pos, Alpha pass1, Alpha pass2, bool ignoreOne) {
 	if (pos == N)
 		return 1 << 29;
-	int& mem = cache1[mhash(pos, pass1, pass2)];
-	if (mem >= 0) return mem;
+	int dummy = -1;
+	int* mem = (ignoreOne ? &dummy : &cache1[mhash(pos, pass1, pass2)]);
+	if (*mem >= 0) return *mem;
 
 	if (ar[pos] != pass1) {
-		if (ar[pos] != pass2) {
-			return mem = solve(pos+1, pass1, pass2) + 1; // "h"
+		if (ar[pos] != pass2 || ignoreOne) {
+			return *mem = solve(pos+1, pass1, pass2) + 1; // "h"
 		}
 		else {
 			int res = 1 << 29;
@@ -127,7 +114,7 @@ int solve(int pos, Alpha pass1, Alpha pass2) {
 					continue;
 				res = min(res, solve(pos+1, pass1, c) + 3); // "h", "fc"
 			}
-			return mem = res;
+			return *mem = res;
 		}
 	}
 	else {
@@ -139,7 +126,7 @@ int solve(int pos, Alpha pass1, Alpha pass2) {
 			if (c1 == E)
 				continue;
 
-			if (ar[pos] != pass2) {
+			if (ar[pos] != pass2 || ignoreOne) {
 				res = min(res, solve(pos+1, c1, pass2) + 3); // "fc", "h"
 			}
 			else {
@@ -150,7 +137,7 @@ int solve(int pos, Alpha pass1, Alpha pass2) {
 				}
 			}
 		}
-		return mem = res;
+		return *mem = res;
 	}
 }
 
