@@ -1,0 +1,57 @@
+Let's start by making a few observations:
+
+ (1) When moving forward towards a position (with "f"), it is never advantageous to be further behind in the string. Formally, assume we are at position $a$, and the shortest sequence of "f"-jumps that takes us to position $c$, $a<c$ is $a_1, a_2, \dots a_n$. Then starting from position $b$, $a<b \le c$, the number of jumps it takes to get to $c$ is less than or equal to $n$. The proof is easy: We simply use the same sequence of jumps, skipping the ones that would take us ahead of the target position. The cursor, when following this sequence of moves, will always to ahead of, or at the same position as it would when following the original sequence of moves starting from $a$, so we will end up at position $c$ with at most $n$ moves. (Obviously, the shortest sequence from $b$ to $c$ might be even shorter than the one we constructed.)
+
+ (2) We can use "x" on an E the first time we reach it. There is no advantage to it remaining since all "f"s skip over it, and passing over it multiple times with "h" only increases the number of moves used.
+
+ (3) It is unnecessary to go back (with "h") over a letter twice. (TODO: This argument could use some simplification.)
+ To see this, consider two consecutive overlapping runs of "h"es (disregarding "x"es, which are made irrelevant by (2)).
+ If one run is totally contained in the other, it is disadvantageous by (1) - we can reduce the number of steps by removing some of the "h"es.
+ If the second run both starts and ends before the first one, we can simply remove the sequence of jumps between them. (See picture 1.)
+ If the second run both starts and ends after the first one, we can reduce the number of steps by making it end right after the first one's start instead (advantageous by (1)). (See pictures 2, 3.)
+
+ (TODO: real images, side by side)
+
+          <- hhhhhhhhhhhhhhhhhhhhhh
+         |
+          -------------> (some sequence of jumps)
+                        |
+    <- hhhhhhhhhhhhhhhhhh
+   |
+
+ (Picture 1: The second run begins and ends *before* the first one.)
+
+
+    <- hhhhhhh (implicit single "x"es interspersed)
+   |
+    -----------------------------> (some sequence of jumps)
+                                  |
+          <- hhhhhhhhhhhhhhhhhhhhhh
+         |
+
+ (Picture 2: The second run starts and ends *after* the first one.)
+
+    <- hhhhhhh (implicit single "x"es interspersed)
+   |
+    -----------------------------> (some sequence of jumps)
+                                  |
+          <- hhhhhhhhhhhhhhhhhhhhhh
+         |
+
+ (Picture 3: Reduction of picture 2.)
+
+    <- hhhhhhh (implicit single "x"es interspersed)
+   |
+    -----------------------------> (some sequence of jumps)
+                                  |
+               <- hhhhhhhhhhhhhhhhh
+              |
+
+ (4) (A consequence of (3)) Each "e" will be moved to (by a sequence of "h"es) exactly once.
+
+ (5) (A consequence of (3)) The sequence of operations will look something like this diagram: (TODO)
+
+
+We can now apply dynamic programming to arrive at a number of possible solutions. In what follows, let $A$ denote the size of the alphabet (in our case $A=26$).
+
+The simplest one, which runs in time $O(blah blah)$ and is expected to earn 30 points, blah blah

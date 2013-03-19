@@ -1,0 +1,48 @@
+ (3) It is unnecessary to go back (with "h") over a letter twice. To see this, we can consider the four possible cases for overlapping streaks of "h"es: (TODO: real images, side by side) (has anyone got a simpler proof?)
+
+    <- hhhhhhhhhhhhhhhhhhhhhhhhh (implicit single "x"es interspersed)
+   |
+    ----------------> (some sequence of jumps)
+                     |
+          <- hhhhhhhhh
+         |
+
+ (Case 1: The second streak is contained within the first one.)
+
+
+          <- hhhhhhhhhhhhhhhhhhhhhh
+         |
+          -------------> (some sequence of jumps)
+                        |
+    <- hhhhhhhhhhhhhhhhhh
+   |
+
+ (Case 2: The second streak both begins and ends before the first one.)
+
+
+    <- hhhhhhh (implicit single "x"es interspersed)
+   |
+    -----------------------------> (some sequence of jumps)
+                                  |
+          <- hhhhhhhhhhhhhhhhhhhhhh
+         |
+
+ (Case 3: The second streak starts and ends after the first one.)
+
+
+          <- hhhhhhh
+         |
+          -----------------------> (some sequence of jumps)
+                                  |
+     <- hhhhhhhhhhhhhhhhhhhhhhhhhhh
+    |
+
+ (Case 4: The first streak is contained with the second one.)
+
+
+In cases 1 and 4, we are moving backwards, which is disadvantageous by (1).
+
+In case 2, we can simply leave out the jumps.
+
+In case 3, there is no point to going back all the way *into* the first streak, we can simply stop where it begins.
+
