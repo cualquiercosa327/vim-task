@@ -47,11 +47,20 @@ Let's start by making a few observations:
                <- hhhhhhhhhhhhhhhhh
               |
 
- (4) (A consequence of (3)) Each "e" will be moved to (by a sequence of "h"es) exactly once.
+ (4) (A consequence of (3)) Each "e" will be moved back over (by a sequence of "h"es) exactly once.
 
- (5) (A consequence of (3)) The sequence of operations will look something like this diagram: (TODO)
+ (5) (A consequence of (3)) The sequence of operations will look something like this diagram: (TODO: picture)
 
 
 We can now apply dynamic programming to arrive at a number of possible solutions. In what follows, let $A$ denote the size of the alphabet (in our case $A=26$).
 
-The simplest one, which runs in time $O(blah blah)$ and is expected to earn 30 points, blah blah
+The simplest one, which runs in time $O(N^3)$ and is expected to earn 40 points, splits the problem into subproblems of the form: Given that the cursor is at position $a$, and all "e"s up to position $b$ have been deleted, what is the least number of moves required to get rid of all remaining "e"s? To solve this in terms of other subproblems, simply try all possible new values of $b$ and let Such a problem can be solved in terms of other ones by taking the minimum of
+Denoting this by $f(a, b)$, we can solve it in terms of other subproblems as follows:
+$$f(a, b) = \min_{b' > b} (f(a', b') + \text{(moves required from position $a$ to $b'$)} + (b' - a')
+where $a'$ is the position of the first "e" after $b'$. Calculating the number of moves required to go from $a$ to $b'$ is easiest done with (again) dynamic programming, precomputed for each $a$.
+
+If there are very few "e"s in the string, an optimization to the above becomes possible: we only have to calculate $f$ for the case where both $a$ and $b$ point right after an "e". Assuming equal distribution of letters this instead makes the runtime roughly $O(N^3/A^2 + N^2)$. Because we may join together runs of "e"s to only single a single one, this can be guaranteed to save at least a constant factor of 4. No additional points were given for this, though.
+
+Another variant of dynamic programming, that brings the runtime down to $O(N^2A)$ and is expected to earn 70 points, can be gotten by observing that in the previous solution, we have either reached all "e"s already, or we must jump to beyond $b$, and /there are only $(A-1)$ distinct ways of doing this/ - one for each letter. Thus the subproblem we set out to solve is: Assuming each "e"s before position $a$ have been deleted, and the cursor is currently jumping into position $a$ using the letter $c$, what is the least number of moves required to get rid of all remaining "e"s?
+
+The final 100-point solution takes this to its edge, and asks instead: Given that a position $a$ was first jumped into with the letter $c$, and after returning with "h" was jumped into a second time with the letter $d$, what is the least number of moves that have to be made on the right side of $a$? This has a runtime of $O(NA^2)$, but is noticably harder to code than the initial approach because of how it has to handle all the different kinds of jumps that can occur on each position.
