@@ -47,3 +47,29 @@ In case 2, we can simply leave out the jumps.
 In case 3, there is no point to going back all the way *into* the first streak, we can simply stop where it begins.
 
 Note that this includes even more special cases for kinds of jumps and backward movements, and is notably more trickier to code than the obvious dynamic programming approach.
+
+
+--
+
+types of tests:
+- many consecutive "e"s, not at start (dunno about this)
+- alternating
+- random
+- hard case ???
+- maybe some english text
+- special cases:
+ * Par's aaaaaaeraaaaaaer
+ * start with e
+ * jump more than just one, combine with above
+
+
+limits:
+
+40 points: 200 (400 for forcing optimization for 10 points? seems reasonable)
+70 points: 5000 (10000 for opt for 5 points?)
+100 points: 80000
+
+todo:
+
+need to code bad solutions!
+create runner script
