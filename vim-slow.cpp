@@ -1,3 +1,5 @@
+// O(N^3)
+
 #include <iostream>
 #include <vector>
 #include <cassert>
@@ -13,7 +15,6 @@ int N;
 int eend;
 vector<int> pos, invpos;
 vector<vector<int> > dist;
-vector<vector<int> > directdist;
 
 int ctoi(char c) {
 	if ('a' <= c && c <= 'z')
@@ -48,14 +49,19 @@ void finddists(int efrom) {
 	}
 }
 
+vector<vector<int> > mem;
 int solve(int eat, int efirstUncovered) {
 	if (efirstUncovered == eend)
 		return 0;
+	int& out = mem[eat][efirstUncovered];
+	if (out != INF)
+		return out;
+
 	int ret = INF;
 	for (int i = efirstUncovered; i < eend; ++i) {
 		ret = min(ret, dist[eat][i] + pos[i] - pos[efirstUncovered] + solve(efirstUncovered, i+1));
 	}
-	return ret;
+	return out = ret;
 }
 
 int main() {
@@ -76,6 +82,7 @@ int main() {
 	}
 	eend = (int)pos.size();
 	dist.assign(eend, vector<int>(eend, INF));
+	mem.assign(eend, vector<int>(eend, INF));
 
 	for (int i = 0; i < eend; ++i) {
 		finddists(i);

@@ -1,3 +1,5 @@
+// O(NA^2)
+
 #include <iostream>
 #include <cassert>
 #include <vector>
