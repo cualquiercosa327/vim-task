@@ -78,6 +78,7 @@ int solveRight(int pos, Alpha pass) {
 		for (Alpha c = 0; c < ALPHA; ++c) {
 			if (c == E)
 				continue;
+			// true because "c" can not hit ar[npos]
 			res = min(res, solve(npos, pass, c, true) + 2); // "fc"
 		}
 		res = min(res, solveRightSingleBack(npos, pass));
@@ -121,7 +122,7 @@ int solve(int pos, Alpha pass1, Alpha pass2, bool ignoreOne) {
 	}
 	else {
 		// Either step back...
-		int res = 1 + solveRight(pos, pass2);
+		int res = 1 + solveRight((ignoreOne ? pos + 1 : pos), pass2);
 
 		// ... or continue.
 		for (Alpha c1 = 0; c1 < ALPHA; ++c1) {
