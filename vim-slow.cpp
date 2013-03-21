@@ -1,6 +1,7 @@
 // O(N^3)
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <cassert>
 #include <string>
@@ -25,9 +26,11 @@ int ctoi(char c) {
 }
 
 void finddists(int efrom) {
+	// start from the position after the "e" (which is where we end up after "x") - this is not an "e"
 	int from = pos[efrom] + 1;
+
 	vector<int> directdist(N, INF);
-	vector<int> active(ALPHA, 2);
+	vector<int> active(ALPHA, 2); // "fc"
 	for (int pos = from + 1; pos < N; ++pos) {
 		int c = ctoi(line[pos]);
 		if (c == E)
@@ -64,12 +67,31 @@ int solve(int eat, int efirstUncovered) {
 	return out = ret;
 }
 
+bool equalE(char a, char b) {
+	return a == 'e' && b == 'e';
+}
+
 int main() {
 	int res = 0;
 	getline(cin, line);
-	while (line[res] == 'e')
-		++res;
-	line = line.substr(res);
+
+	// count all the "x"s
+	for (int i = 0; i < (int)line.size(); ++i) {
+		if (line[i] == 'e')
+			++res;
+	}
+
+	// get rid of initial "e"s
+	int firstNonE = 0;
+	while (line[firstNonE] == 'e')
+		++firstNonE;
+	line = line.substr(firstNonE);
+
+	// get rid of duplicate "e"s, count one "h" for each
+	res += line.size();
+	line.erase(unique(line.begin(), line.end(), equalE), line.end());
+	res -= line.size();
+
 	line = "e" + line;
 	N = (int)line.size();
 
@@ -89,7 +111,6 @@ int main() {
 	}
 
 	res += solve(0, 1);
-	res += eend - 1; // all the "x", except for the fake one
 	cout << res << endl;
 	return 0;
 }
