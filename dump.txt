@@ -58,10 +58,7 @@ types of tests:
 - hard case ???
 - maybe some english text
 - special cases:
- * Par's aaaaaaeraaaaaaer
- * start with e
- * jump more than just one, combine with above
-
+ * not just one jump
 
 limits:
 
@@ -73,3 +70,8 @@ todo:
 
 need to code bad solutions!
 create runner script
+
+fun samples:
+ceehceh
+aaaaaaeraaaaaaer
+eerier
